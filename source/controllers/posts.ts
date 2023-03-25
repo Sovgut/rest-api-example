@@ -1,11 +1,11 @@
 import {NextFunction, Request, Response} from "express";
 import {PostsService} from "../services/posts.js";
-import {createQuery} from "../core/utils/create-query.js";
+import {createWebQuery} from "../core/utils/create-web-query.js";
 
 export class PostsController {
     static async getPosts (request: Request, response: Response, next: NextFunction) {
         try {
-            const query = createQuery(request.query)
+            const query = createWebQuery(request.query)
             const service = new PostsService()
             const posts = await service.getPosts(query)
 

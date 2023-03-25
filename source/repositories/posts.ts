@@ -1,6 +1,7 @@
 import type {Prisma} from "@prisma/client";
 import type {IQuery} from "../core/types/utils.js";
 import {databaseClient} from "../core/database.js";
+import {createWhereQuery} from "../core/utils/create-where-query.js";
 
 export class PostsRepository {
     #database = databaseClient()
@@ -11,27 +12,15 @@ export class PostsRepository {
             skip: query.skip,
         }
 
-        if (query.filter.id) {
-            if (!options.where) options.where = {}
-
-            options.where.id = query.filter.id
-        }
-
-        if (query.filter.title) {
-            if (!options.where) options.where = {}
-
-            options.where.title = {
+        options.where = createWhereQuery({
+            id: query.filter.id,
+            title: query.filter.title && {
                 contains: query.filter.title
-            }
-        }
-
-        if (query.filter.description) {
-            if (!options.where) options.where = {}
-
-            options.where.description = {
+            },
+            description: query.filter.description && {
                 contains: query.filter.description
             }
-        }
+        })
 
         const rows = await this.#database.post.findMany(options)
         const count = await this.#database.post.count(options)

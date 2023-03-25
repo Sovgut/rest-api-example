@@ -1,8 +1,8 @@
 import type {IQuery} from "../types/utils.js";
 import {Logger} from "../logger.js";
 
-export function createQuery (query: any): IQuery {
-    const logger = new Logger('CreateQuery')
+export function createWebQuery (query: any): IQuery {
+    const logger = new Logger('CreateWebQuery')
 
     let take = 10
     let skip = 0
